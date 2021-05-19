@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryViewHolder extends RecyclerView.ViewHolder{
     TextView title;
+    RecyclerView modulesRv;
     public CategoryViewHolder(@NonNull View itemView) {
         super(itemView);
         title = itemView.findViewById(R.id.title);
+        modulesRv = itemView.findViewById(R.id.inner_rv);
     }
 }

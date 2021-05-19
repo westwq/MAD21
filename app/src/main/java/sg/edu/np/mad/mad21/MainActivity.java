@@ -16,24 +16,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        CheckBox cb = findViewById(R.id.checkBox);
+        cb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor prefEdit = getSharedPreferences(SKIP, MODE_PRIVATE).edit();
+                prefEdit.putBoolean(SKIP, true);
+                prefEdit.apply();
+
+                launchRV();
+            }
+        });
+
         SharedPreferences pref = getSharedPreferences(SKIP, MODE_PRIVATE);
         if(pref.getBoolean(SKIP, false)) {
             launchRV();
         }
         else {
-
-            CheckBox cb = findViewById(R.id.checkBox);
-            cb.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    SharedPreferences.Editor prefEdit = getSharedPreferences(SKIP, MODE_PRIVATE).edit();
-                    prefEdit.putBoolean(SKIP, true);
-                    prefEdit.apply();
-
-                    launchRV();
-                }
-            });
-
             //Countdown can be in oncreate/../onresume
             new CountDownTimer(3000, 3000) {
 
