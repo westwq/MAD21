@@ -23,10 +23,10 @@ public class ListActivity extends AppCompatActivity {
 
         //TODO: Populate data to list
 
-        ArrayList<Electives> e = dbHandler.getAll();
+        ArrayList<AreaOfInterest> e = dbHandler.getAll();
 
         for (int i = 0; i< e.size(); i++) {
-            data.add(e.get(i).getAreaOfInterest());
+            data.add(e.get(i).getTitle());
         }
 
         RecyclerView rv = findViewById(R.id.outer_rv);

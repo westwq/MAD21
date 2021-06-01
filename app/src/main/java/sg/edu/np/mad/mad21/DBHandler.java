@@ -1,28 +1,35 @@
 package sg.edu.np.mad.mad21;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-
 import java.util.ArrayList;
 
-public class DBHandler extends SQLiteOpenHelper {
-    static final String TAG = "DataBase";
-    static final String FILENAME = "DBHandler";
+/****************************************************
+*   This is the Database Handler class.             *
+*   DO NOT TAMPER WITH ANYTHING IN THIS CLASS       *
+*   AS IT WILL AFFECT THE OUTPUT OF THE SOLUTION.   *
+*****************************************************
+*/
 
+public class DBHandler extends SQLiteOpenHelper {
     public static int DATABASE_VERSION = 1;
     public static String DATABASE_NAME = "moduleDB.db";
     public static String TABLE_ITELECTIVES = "ITElectives";
-    public static String COLUMN_AREAOFINTEREST = "AreaOfInterest";
+    public static String COLUMN_AREAOFINTEREST = "Titles";
     public static String COLUMN_MODULES = "Modules";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version)
     {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
+
+    /*
+    This function creates the Database that is required by the application.
+    It will also add predefined set of Dataset to the empty Database.
+    DO NOT TAMPER WITH THIS.
+    */
     @Override
     public void onCreate(SQLiteDatabase db)
     {
@@ -30,27 +37,31 @@ public class DBHandler extends SQLiteOpenHelper {
                 "(" + COLUMN_AREAOFINTEREST + " TEXT," + COLUMN_MODULES + " TEXT" + ")";
 
         db.execSQL(CREATE_ELECTIVES_TABLE);
-        String varname1 = ""
+        String varName1 = ""
                 + "INSERT INTO \"ITElectives\" VALUES ('Cloud Computing','Advanced Databases;Cloud Architecture & Technologies;Developing Cloud Applications;Server & Cloud Security;Virtualisation and Data Centre Management;');";
 
 
-        String varname2 = ""
+        String varName2 = ""
                 + "INSERT INTO \"ITElectives\" VALUES ('Data Science & Analytics','Big Data;Data Visualisation;Deep Learning;Descriptive Analytics;Machine Learning;Quantitative Analysis;');";
 
 
-        String varname3 = ""
+        String varName3 = ""
                 + "INSERT INTO \"ITElectives\" VALUES ('Enterprice Solutioning & Marketing','Customer Decision Making & Negotiation Skills;Customer Experience Management;Enterprise Resource Planning;Infocomm Sales & Marketing Strategies;Technology for Financial Institutions;');";
 
 
-        String varname4 = ""
+        String varName4 = ""
                 + "INSERT INTO \"ITElectives\" VALUES ('Games Programming','Artificial Intelligence for Games;');";
 
-        db.execSQL(varname1);
-        db.execSQL(varname2);
-        db.execSQL(varname3);
-        db.execSQL(varname4);
+        db.execSQL(varName1);
+        db.execSQL(varName2);
+        db.execSQL(varName3);
+        db.execSQL(varName4);
     }
 
+    /*
+    This function upgrades the Database if there is a newer version
+    supplied.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
@@ -58,38 +69,27 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addElectives(Electives electives)
-    {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_AREAOFINTEREST, electives.getAreaOfInterest());
+    /*
+    This function searches for the title requested in the Database
+    and returns the respective title and modules found in the row
+    via a cursor in the Database.
 
-        StringBuilder str = new StringBuilder();
-
-        for (int i = 0; i < electives.getModules().size(); i++) {
-            str.append(electives.getModules().get(i) + ";");
-        }
-
-        String modulesString = str.toString();
-        values.put(COLUMN_MODULES, modulesString);
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(TABLE_ITELECTIVES, null, values);
-        db.close();
-    }
-
-    public Electives findAreaOfInterest(String areaOfInterest)
+    Input : String of title
+    Output: Object AreaOfInterest
+    */
+    public AreaOfInterest findTitle(String title)
     {
         String query = "SELECT * FROM " + TABLE_ITELECTIVES + " WHERE "
-                + COLUMN_AREAOFINTEREST + "= \"" + areaOfInterest + "\"";
+                + COLUMN_AREAOFINTEREST + "= \"" + title + "\"";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        Electives queryData = new Electives();
+        AreaOfInterest queryData = new AreaOfInterest();
         ArrayList<String> moduleList = new ArrayList<>();
         if(cursor.moveToFirst())
         {
-            queryData.setAreaOfInterest(cursor.getString(0));
+            queryData.setTitle(cursor.getString(0));
             String str= cursor.getString(1);
             String[] list = str.split(";");
 
@@ -110,17 +110,24 @@ public class DBHandler extends SQLiteOpenHelper {
         return queryData;
     }
 
-    public ArrayList<Electives> getAll()
+    /*
+    This function queries for the table of interest in the Database
+    and returns the entire table in the form of an arraylist of the data.
+
+    Input: null
+    Output: Arraylist of object AreaOfInterest
+     */
+    public ArrayList<AreaOfInterest> getAll()
     {
         String query = "SELECT * FROM " + TABLE_ITELECTIVES ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        ArrayList<Electives> resultant = new ArrayList<>();
+        ArrayList<AreaOfInterest> resultant = new ArrayList<>();
 
         while(cursor.moveToNext()){
-            Electives queryData = new Electives();
-            queryData.setAreaOfInterest(cursor.getString(0));
+            AreaOfInterest queryData = new AreaOfInterest();
+            queryData.setTitle(cursor.getString(0));
 
             String str = cursor.getString(1);
             String[] list = str.split(";");
@@ -129,7 +136,6 @@ public class DBHandler extends SQLiteOpenHelper {
             {
                 moduleList.add(list[i]);
             }
-
             queryData.setModules(moduleList);
             resultant.add(queryData);
         }
@@ -139,27 +145,4 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
-    public boolean deleteAreaOfInterest(String areaOfInterest)
-    {
-        boolean result = false;
-
-        String query = "SELECT * FROM " + TABLE_ITELECTIVES + " WHERE "
-                + COLUMN_AREAOFINTEREST + "= \"" + areaOfInterest + "\"";
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-
-        Electives delElective = new Electives();
-
-        if(cursor.moveToFirst())
-        {
-            delElective.setAreaOfInterest(cursor.getString(0));
-            db.delete(TABLE_ITELECTIVES, COLUMN_AREAOFINTEREST
-                    + "= ?", new String[]{String.valueOf(delElective.getAreaOfInterest())});
-            cursor.close();
-            result = true;
-        }
-        db.close();
-        return result;
-    }
 }

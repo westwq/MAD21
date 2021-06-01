@@ -58,48 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void launchRV()
     {
-        //TODO Creation of database
-        /*String [] cloudList = {"Advanced Databases", "Cloud Architecture & Technologies",
-                "Developing Cloud Applications", "Server & Cloud Security", "Virtualisation and Data Centre Management"};
-        String [] dsaList = {"Big Data", "Data Visualisation", "Deep Learning", "Descriptive Analytics",
-                "Machine Learning", "Quantitative Analysis"};
-        String [] esmList = {"Customer Decision Making & Negotiation Skills",
-                "Customer Experience Management", "Enterprise Resource Planning",
-                "Infocomm Sales & Marketing Strategies", "Technology for Financial Institutions"};
-        String [] gamesList = {"Artificial Intelligence for Games"};
-
-        ArrayList<String> cloudModule = new ArrayList<>();
-        ArrayList<String> dsaModule = new ArrayList<>();
-        ArrayList<String> esmModule = new ArrayList<>();
-        ArrayList<String> gamesModule = new ArrayList<>();
-
-        for(int i = 0; i < cloudList.length; i++)
-        {
-            cloudModule.add(cloudList[i]);
-        }
-        for(int i = 0; i < dsaList.length; i ++)
-        {
-            dsaModule.add(dsaList[i]);
-        }
-        for(int i = 0; i < esmList.length; i ++)
-        {
-            esmModule.add(esmList[i]);
-        }
-        for(int i = 0; i < gamesList.length; i ++)
-        {
-            gamesModule.add(gamesList[i]);
-        }
-        String [] areaOfInterestList = {"Cloud Computing", "Data Science & Analytics", "Enterprice Solutioning & Marketing",
-        "Games Programming"};
-        ArrayList [] moduleList = {cloudModule, dsaModule, esmModule, gamesModule};
-        Log.v("DATABASE", String.valueOf(moduleList.length));
-        for(int i = 0; i < moduleList.length; i++) {
-            Electives electives = new Electives(areaOfInterestList[i], moduleList[i]);
-            dbHandler.addElectives(electives);
-        }*/
-
-
-
         Intent i = new Intent(MainActivity.this, ListActivity.class);
         startActivity(i);
     }
