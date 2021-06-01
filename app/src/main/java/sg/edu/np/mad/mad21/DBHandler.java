@@ -30,6 +30,25 @@ public class DBHandler extends SQLiteOpenHelper {
                 "(" + COLUMN_AREAOFINTEREST + " TEXT," + COLUMN_MODULES + " TEXT" + ")";
 
         db.execSQL(CREATE_ELECTIVES_TABLE);
+        String varname1 = ""
+                + "INSERT INTO \"ITElectives\" VALUES ('Cloud Computing','Advanced Databases;Cloud Architecture & Technologies;Developing Cloud Applications;Server & Cloud Security;Virtualisation and Data Centre Management;');";
+
+
+        String varname2 = ""
+                + "INSERT INTO \"ITElectives\" VALUES ('Data Science & Analytics','Big Data;Data Visualisation;Deep Learning;Descriptive Analytics;Machine Learning;Quantitative Analysis;');";
+
+
+        String varname3 = ""
+                + "INSERT INTO \"ITElectives\" VALUES ('Enterprice Solutioning & Marketing','Customer Decision Making & Negotiation Skills;Customer Experience Management;Enterprise Resource Planning;Infocomm Sales & Marketing Strategies;Technology for Financial Institutions;');";
+
+
+        String varname4 = ""
+                + "INSERT INTO \"ITElectives\" VALUES ('Games Programming','Artificial Intelligence for Games;');";
+
+        db.execSQL(varname1);
+        db.execSQL(varname2);
+        db.execSQL(varname3);
+        db.execSQL(varname4);
     }
 
     @Override
