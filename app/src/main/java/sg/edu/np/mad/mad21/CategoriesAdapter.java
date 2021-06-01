@@ -39,10 +39,18 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoryViewHolder>{
 
         //TODO: Update inner rv
         ArrayList<String> data2 = new ArrayList<>();
+        DBHandler dbHandler = new DBHandler(c, null,null, 1);
+        Electives e = dbHandler.findAreaOfInterest(data);
+        for (int i = 0; i < e.getModules().size(); i++)
+        {
+            data2.add(e.getModules().get(i));
+        }
+
+        /*
         for(int i=0; i<new Random().nextInt(6); i++)
         {
             data2.add("module /"+ i);
-        }
+        }*/
         LinearLayoutManager innerLayout = new LinearLayoutManager(c);
         innerLayout.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.modulesRv.setLayoutManager(innerLayout);
