@@ -118,24 +118,20 @@ public class DBHandler extends SQLiteOpenHelper {
 
         ArrayList<Electives> resultant = new ArrayList<>();
 
-        if(cursor.moveToFirst()){
-            while(!cursor.isAfterLast()){
+        while(cursor.moveToNext()){
+            Electives queryData = new Electives();
+            queryData.setAreaOfInterest(cursor.getString(0));
 
-                Electives queryData = new Electives();
-                queryData.setAreaOfInterest(cursor.getString(0));
-
-                String str = cursor.getString(1);
-                String[] list = str.split(";");
-                ArrayList<String> moduleList = new ArrayList<>();
-                for(int i = 0; i < list.length; i++)
-                {
-                    moduleList.add(list[i]);
-                }
-
-                queryData.setModules(moduleList);
-                resultant.add(queryData);
-                cursor.moveToNext();
+            String str = cursor.getString(1);
+            String[] list = str.split(";");
+            ArrayList<String> moduleList = new ArrayList<>();
+            for(int i = 0; i < list.length; i++)
+            {
+                moduleList.add(list[i]);
             }
+
+            queryData.setModules(moduleList);
+            resultant.add(queryData);
         }
         cursor.close();
         db.close();
