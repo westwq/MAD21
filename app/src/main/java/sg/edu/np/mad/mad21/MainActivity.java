@@ -14,9 +14,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Database start here
-    DBHandler dbHandler = new DBHandler(this, null, null, 1);
-
     private final static String SKIP = "pref_skip";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
