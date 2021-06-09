@@ -11,51 +11,68 @@ import android.widget.CheckBox;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
     private final static String SKIP = "pref_skip";
+    private boolean skip = false;
+    private TimerTask autoLaunch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences pref = getSharedPreferences(SKIP, MODE_PRIVATE);
+        if(skip = pref.getBoolean(SKIP, false)) {
+            launchRV();
+        }
+
         CheckBox cb = findViewById(R.id.checkBox);
+        cb.setChecked(skip);
         cb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences.Editor prefEdit = getSharedPreferences(SKIP, MODE_PRIVATE).edit();
-                prefEdit.putBoolean(SKIP, true);
-                prefEdit.apply();
+                pref.edit().putBoolean(SKIP, cb.isChecked()).apply();
 
+                autoLaunch.cancel();
                 launchRV();
             }
         });
 
-        SharedPreferences pref = getSharedPreferences(SKIP, MODE_PRIVATE);
-        if(pref.getBoolean(SKIP, false)) {
-            launchRV();
-        }
-        else {
-            //Countdown can be in oncreate/../onresume
-            new CountDownTimer(3000, 3000) {
+    }
 
-                @Override
-                public void onTick(long l) {
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-                }
-
-                @Override
-                public void onFinish() {
-                    launchRV();
-                }
-            }.start();
-        }
+        //timer
+        autoLaunch = new TimerTask() {
+            @Override
+            public void run() {
+                launchRV();
+            }
+        };
+        new Timer().schedule(autoLaunch, 3000);
+//        new CountDownTimer(3000, 3000) {
+//
+//            @Override
+//            public void onTick(long l) {
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                launchRV();
+//            }
+//        }.start();
     }
 
     private void launchRV()
     {
         Intent i = new Intent(MainActivity.this, ListActivity.class);
+        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(i);
     }
 }
